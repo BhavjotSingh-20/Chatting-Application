@@ -1,10 +1,7 @@
 package chatting.application;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.*;
@@ -21,6 +18,7 @@ public class Server extends JFrame implements ActionListener {
     static Socket s;
     static DataInputStream din;
     static DataOutputStream dout;
+    Boolean typing;
     Server() {
           p1 =  new JPanel();
           p1.setLayout(null);
@@ -59,6 +57,15 @@ public class Server extends JFrame implements ActionListener {
         l4.setForeground(Color.WHITE);
         l4.setBounds(110,35,100,15);
         p1.add(l4);
+        Timer t = new Timer(1, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!typing)
+                    l4.setText("Active Now");
+
+            }
+        });
+        t.setInitialDelay(2000);
 
 
         ImageIcon i7 = new ImageIcon(ClassLoader.getSystemResource("chatting/application/icons/video.png"));
@@ -98,6 +105,29 @@ public class Server extends JFrame implements ActionListener {
         t1.setBounds(5,655,310,40);
         t1.setFont(new Font("SAN_SERIF",Font.PLAIN,16));
         add(t1);
+        t1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                l4.setText("Typing...");
+                t.stop();
+                typing = true;
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                typing = false;
+                if(!t.isRunning())
+                    t.start();
+
+            }
+        });
+
 
         b1 = new JButton("Send");
         b1.setBounds(320,655,123,40);
