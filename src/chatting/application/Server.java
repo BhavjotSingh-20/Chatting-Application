@@ -5,13 +5,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 
 public class Server extends JFrame implements ActionListener {
     JPanel p1;
     JTextField t1;
     JButton b1;
-    JTextArea a1;
+    static  JTextArea a1;
+    static ServerSocket skt;
+    static Socket s;
+    static DataInputStream din;
+    static DataOutputStream dout;
     Server() {
           p1 =  new JPanel();
           p1.setLayout(null);
@@ -110,12 +119,33 @@ public class Server extends JFrame implements ActionListener {
     public static void main(String[] args)
     {
         new Server().setVisible(true);
+
+        try {
+            String msginput ="";
+            skt=  new ServerSocket(6001);
+            s = skt.accept();
+            din =  new DataInputStream(s.getInputStream());
+            dout = new DataOutputStream(s.getOutputStream());
+            msginput = din.readUTF();
+            a1.setText(a1.getText() + "\n" + msginput);
+            skt.close();
+            s.close();
+
+        } catch(Exception e) {
+
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String out = t1.getText();
+        try {   String out = t1.getText();
         a1.setText(a1.getText() + "\n\t\t\t"+ out);
+
+            dout.writeUTF(out);
+        } catch (IOException ioException) {
+//            ioException.printStackTrace();
+        }
         t1.setText("");
     }
+
 }
