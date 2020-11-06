@@ -165,7 +165,7 @@ public class Client extends JFrame implements ActionListener {
 
                 dout.writeUTF(out);
             } catch(Exception a) {
-
+                System.out.println(a);
             }
             t1.setText("");
         }
