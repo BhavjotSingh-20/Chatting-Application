@@ -78,7 +78,12 @@ public class Server extends JFrame implements ActionListener {
 
         a1 =  new JTextArea();
         a1.setBounds(5,75,440,570);
-        a1.setBackground(Color.PINK);
+//        a1.setBackground(Color.PINK);
+        a1.setFont(new Font("SAN_SERIF",Font.PLAIN,16));
+        a1.setEditable(false);
+        a1.setLineWrap(true);
+        a1.setWrapStyleWord(true);
+//        a1.setAlignmentX(40);
         add(a1);
         t1 = new JTextField();
         t1.setBounds(5,655,310,40);
@@ -110,7 +115,7 @@ public class Server extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String out = t1.getText();
-        a1.setText(a1.getText() + "\n" + out);
+        a1.setText(a1.getText() + "\n\t\t\t"+ out);
         t1.setText("");
     }
 }
