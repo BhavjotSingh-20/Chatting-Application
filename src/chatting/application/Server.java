@@ -1,10 +1,17 @@
 package chatting.application;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
-public class Server extends JFrame {
+public class Server extends JFrame implements ActionListener {
     JPanel p1;
+    JTextField t1;
+    JButton b1;
+    JTextArea a1;
     Server() {
           p1 =  new JPanel();
           p1.setLayout(null);
@@ -17,6 +24,13 @@ public class Server extends JFrame {
                JLabel l1 = new JLabel(i3);
         l1.setBounds(5,17,30,30);
         p1.add(l1);
+        l1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.exit(0);
+            }
+        });
 
         ImageIcon i4 = new ImageIcon(ClassLoader.getSystemResource("chatting/application/icons/1.png"));
         Image i5 = i4.getImage().getScaledInstance(60,60, Image.SCALE_DEFAULT);
@@ -61,14 +75,42 @@ public class Server extends JFrame {
         ll2.setBounds(410,20,13,25);
         p1.add(ll2);
 
+
+        a1 =  new JTextArea();
+        a1.setBounds(5,75,440,570);
+        a1.setBackground(Color.PINK);
+        add(a1);
+        t1 = new JTextField();
+        t1.setBounds(5,655,310,40);
+        t1.setFont(new Font("SAN_SERIF",Font.PLAIN,16));
+        add(t1);
+
+        b1 = new JButton("Send");
+        b1.setBounds(320,655,123,40);
+        b1.setBackground(new Color(7,94,84));
+        b1.setForeground(Color.WHITE);
+        b1.setFont(new Font("SAN_SERIF",Font.PLAIN,16));
+        b1.addActionListener(this);
+        add(b1);
         setLayout(null);
         setSize(450,700);
         setLocation(400,200);
+
+        setUndecorated(true);
         setVisible(true);
 
+
     }
+
     public static void main(String[] args)
     {
         new Server().setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String out = t1.getText();
+        a1.setText(a1.getText() + "\n" + out);
+        t1.setText("");
     }
 }
